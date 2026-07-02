@@ -1,4 +1,3 @@
-// 1. CONFIGURACIÓN INICIAL: URL de API en Python y captura de elementos
 const API_URL = "http://127.0.0.1:8000/api/libros";
 
 const navSearchBtn = document.getElementById("nav-search-btn");
@@ -34,9 +33,9 @@ navSearchBtn.addEventListener("click", () => {
     renderizarLibros(todosLosLibros); // Volvemos a mostrar todo el catálogo
 });
 
-
-// 3. TRAER LOS LIBROS DESDE LA API 
-
+// =========================================================================
+// 3. TRAER LOS LIBROS DESDE LA API (R1: GET ALL) - ACTUALIZADO COMPLETO
+// =========================================================================
 const gallery = document.getElementById("gallery");
 let todosLosLibros = []; 
 
@@ -49,6 +48,7 @@ async function obtenerLibros() {
         // Guardamos la lista fresca en nuestra variable global de control
         todosLosLibros = await respuesta.json();
         
+        // 🔥 SOLUCIÓN: En lugar de elegir una u otra pestaña, 
         // obligamos al sistema a refrescar el contenedor actual según corresponda
         if (profileSection.classList.contains("block")) {
             // Si el usuario está mirando el Perfil, cargamos favoritos actualizados
@@ -117,10 +117,12 @@ function renderizarLibros(lista) {
     }).join("");
 }
 
+// LLAMADA INICIAL
 obtenerLibros();
 
-
+// =========================================================================
 // 4. BUSCADOR EN TIEMPO REAL
+// =========================================================================
 const searchInput = document.getElementById("search-input");
 
 searchInput.addEventListener("input", (evento) => {
@@ -135,8 +137,9 @@ searchInput.addEventListener("input", (evento) => {
     renderizarLibros(librosFiltrados);
 });
 
-// 5. MANEJO DEL FORMULARIO (POST para Crear / PUT para Editar)
-
+// =========================================================================
+// 5. MANEJO DEL FORMULARIO (POST para Crear / PUT para Editar) - COMPLETO
+// =========================================================================
 const libroForm = document.getElementById("libro-form");
 
 libroForm.addEventListener("submit", async (e) => {
@@ -152,11 +155,11 @@ libroForm.addEventListener("submit", async (e) => {
     };
 
     try {
-        let url = `${API_URL}/`; 
+        let url = `${API_URL}/`; // POST lleva barra al final por tu router de Python
         let metodo = "POST";
 
         if (id) {
-            url = `${API_URL}/${id}`; 
+            url = `${API_URL}/${id}`; // 🔥 REPARADO 404: PUT va SIN barra al final exacto como tu Python
             metodo = "PUT";
         }
 
@@ -193,8 +196,9 @@ libroForm.addEventListener("submit", async (e) => {
         alert(`No se pudo guardar: ${error.message}`);
     }
 });
-
-// 6. ELIMINAR LIBRO
+// =========================================================================
+// 6. ELIMINAR LIBRO (R2: DELETE)
+// =========================================================================
 async function eliminarLibro(id) {
     if (!confirm("¿Seguro que querés eliminar este libro del catálogo?")) return;
 
@@ -222,8 +226,9 @@ async function eliminarLibro(id) {
     }
 }
 
-// 7. PREPARAR EDICIÓN (PUT) Y LIMPIEZA 
-
+// =========================================================================
+// 7. PREPARAR EDICIÓN (PUT - Parte 1) Y LIMPIEZA - COMPLETO
+// =========================================================================
 const formTitle = document.getElementById("form-title");
 const submitBtn = document.getElementById("submit-btn");
 const cancelBtn = document.getElementById("cancel-btn");
@@ -254,6 +259,7 @@ function cargarFormularioEdicion(id) {
     window.scrollTo({ top: 0, behavior: 'smooth' });
 }
 
+// 🔥 REPARADO REFERENCE ERROR: La función que te faltaba y reclamaba la consola
 function cancelarEdicion() {
     document.getElementById("libro-id").value = "";
     libroForm.reset();
@@ -264,9 +270,9 @@ function cancelarEdicion() {
 
 cancelBtn.addEventListener("click", cancelarEdicion);
 
-
-// 8. GESTIÓN DE FAVORITOS (LocalStorage)
-
+// =========================================================================
+// 8. GESTIÓN DE FAVORITOS (R3: LocalStorage)
+// =========================================================================
 function alternarFavorito(id) {
     const libro = todosLosLibros.find(l => String(l.id) === String(id));
     if (!libro) return;
