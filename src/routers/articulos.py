@@ -1,7 +1,8 @@
 from fastapi import APIRouter, Path, Query, HTTPException, status
 from typing import List, Optional
 from typing_extensions import Annotated
-from src.schemas.articulos import LibroBase, LibroResponse
+# Quitamos el "src." del principio acá también
+from schemas.articulos import LibroBase, LibroResponse
 
 # Inicializamos el Router con su prefijo global para agrupar los endpoints de la API
 router = APIRouter(prefix="/api/libros", tags=["Libros"])
