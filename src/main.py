@@ -1,8 +1,9 @@
 from fastapi import FastAPI
-from src.routers.articulos import router as articulos_router
 from fastapi.middleware.cors import CORSMiddleware
 
-# Instancia principal de la API - El título personaliza la documentación en /docs
+# NOTA EL PUNTO ANTES DE routers. Esto le dice a Python que busque dentro de src/
+from .routers.articulos import router as articulos_router
+
 app = FastAPI(title="Library Vault API")
 
 # CONFIGURACIÓN DE CORS: Permite que el frontend (JS) se conecte desde el navegador
